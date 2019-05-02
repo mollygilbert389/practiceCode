@@ -1,0 +1,52 @@
+ .box-set{
+    background-color: #eaeaed;
+    height: 200px;
+ }
+
+ .box {
+    background-color: #2db34a;
+    height: 80px;
+    width: 80px;
+    /* relative to their initial position*/
+    /* position: relative; */
+    
+    /* absolute */
+    /* position: absolute; */
+
+    /* fixed */
+    position: fixed;
+ }
+
+ .box-1 {
+     /* relative */
+    /* top: 20px; */
+
+   /* absolute & fixed even when the page moves.  */
+   top: 6%;
+   left: 2%;
+
+ }
+
+ .box-2 {
+     /* relative */
+    /* left: 40px; */
+
+    /* absolute & fixed*/
+    top: 0;
+    right: -40px;
+ }
+
+ .box-3 {
+    /* relative */
+    /* bottom: -10px;
+    right: 20px; */
+
+    /* absolute & fixed*/
+    bottom: -10px;
+    right: 20px;
+ }
+
+ .box-4 {
+    /* absolute & fixed */
+    bottom: 0;
+ }
