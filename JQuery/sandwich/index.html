@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+</head>
+<body>
+
+<h1>Click to eat sandwich</h1>
+
+<ul>
+    <li id="peanutbutter">Peanut Butter Jelly</li>
+    <li id="grilledCheese">Grilled Cheese</li>
+    <li id="roastBeef">Roast Beef</li>
+</ul>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var pbjCounter = 0;
+            var grilledCheeseCounter = 0;
+            var roastBeef = 0;
+            
+            
+            $("#peanutbutter").on("click", function(){
+                alert("Peanut Butter Jelly Time!")
+                pbjCounter++
+                alert("Peanut Butter Jellies Eaten: " + pbjCounter)
+            })
+
+            $("#grilledCheese").on("click", function(){
+                alert("Grilled Cheese!")
+                grilledCheeseCounter++
+                alert("Grilled Cheese Eaten: " + grilledCheeseCounter)
+            })
+
+            $("#roastBeef").on("click", function(){
+                alert("Yum yum Roast Beef!")
+                roastBeef++
+                alert("Roast Beefs Eaten: " + pbjCounter)
+            })
+
+        })
+
+    </script>
+</body>
+</html>
