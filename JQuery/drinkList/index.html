@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Drink List</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+</head>
+<body>
+
+    <h1>Drink Selection</h1>
+    <hr>
+
+    <div id="drinkOptions"></div>
+
+    <script type="text/javascript">
+        var drinkList = [
+            'Coffee: $5',
+            'Espresso: $7',
+            'Cappuccino: $6',
+            'Latte: $4',
+            'Tea: $3',
+            'Ice Coffee: $6',
+            'Ice Espresso: $8',
+            'Ice Latte: $6',
+            'Ice Tea: $4'
+        ];
+    
+        var drinkDiv = $("#drinkOptions")
+
+        for (var i = 0; i < drinkList.length; i++) {
+            var newDrinkDiv = $("<div>" + drinkList[i] + "</div>")
+            drinkDiv.append(newDrinkDiv)
+        }
+    
+    </script>
+
+</body>
+</html>
