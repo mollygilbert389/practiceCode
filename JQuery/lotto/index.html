@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <title>Lottery Generator</title>
+</head>
+<body>
+
+    <div class="jumbotron">
+        <h1 class="text-center">Generate Lottery Numbers!</h1>
+        <div class="text-center">
+            <button id="randomButton" class="btn btn-primary">
+                <h1>?</h1>
+            </button>
+
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="text-center" id="randomNumbers">
+
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button class="text-center btn btn-danger" id="clear">
+            <h2>Clear</h2>
+        </button>
+    </div>
+
+</body>
+<script type="text/javascript">
+
+        $(document).ready(function(){
+            $("#clear").hide()
+        })
+
+        $("#randomButton").on("click", function(){
+            var lotteryNum = "";
+            for (i=0; i < 9; i++) {
+                var random = Math.floor(Math.random()*9) +1 
+                lotteryNum = random + lotteryNum;
+                $("#clear").show()
+
+            }
+
+            $("#randomNumbers").append("<h1>" + lotteryNum + "</h1><br>")
+            
+
+        })
+
+        $("#clear").on("click", function(){
+            $("#randomNumbers").empty();
+            $("#clear").hide()
+        })
+
+</script>
+
+</html>
