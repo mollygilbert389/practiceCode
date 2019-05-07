@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fridge Magnets</title>
+</head>
+
+    <style>
+        body{ background: url("redfridge.png") no-repeat; }
+        .letter{ width: 30px; height: 30px; border-style: solid; padding: 2px; float: left; margin: 2px;}
+        .letter-button-color{ color: darkcyan;}
+        .fridge-color{ color: orange;}
+        #display{margin-top: 50px; height: 400px; width: 200px; margin-left: 170px;}
+        #buttons{ padding-top: 60px; }
+        #clear{ margin-left: 20px; font-size: 25px; color: black; border-style: solid; width: 100px; border-radius: 8px;}
+    </style>
+
+<body>
+    <div id="display"></div>
+    <div id="buttons"></div>
+    <button id="clear">clear</button>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z","_"]
+
+        for (var i=0; i<letters.length; i++) {
+            var b = $("<button>")
+            b.addClass("letter-button letter letter-button-color")
+            b.attr("data-let", letters[i])
+            b.text(letters[i])
+           $("#buttons").append(b)
+        }
+
+        $(".letter-button").on("click", function(){
+            var fridgeMagnet = $('<div class= "letter fridge-color ">').text($(this).data('let'))
+            $("#display").append(fridgeMagnet)
+        })
+
+        $("#clear").on("click", function(){
+            $("#display").empty();
+
+        })
+
+    })
+
+</script>
+
+</html>
