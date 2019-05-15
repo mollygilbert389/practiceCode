@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JQuery Functions</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+</head>
+<body>
+
+    <div></div>
+    <section></section>
+    <li></li>
+
+    
+</body>
+<script>
+
+$(document).ready(function(){
+    $( "div" ).add( "p" ).addClass( "widget" ).text("I am added using the .add()");
+    $( "section" ).add( "span" ).css( "background", "yellow" ).text("I am added using .css()")
+    $('li').clone().add("<span>the bullet abvove is cloned by me .clone() and then I am appended to the body</span>").appendTo(document.body)
+})
+
+</script>
+</html>
