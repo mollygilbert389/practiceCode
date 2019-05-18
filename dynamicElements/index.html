@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Animal GIFs</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button data-animal="cat">Meow</button>
+    <button data-animal="dog">Woof</button>
+    <button data-animal="bird">Chirp</button>
+    
+    <div id="gifsGoHere"></div>
+
+</body>
+
+<script type="text/javascript"> 
+    $("button").on('click', function(){
+        var x = $(this).data('animal')
+        var queryURL =  "http://api.giphy.com/v1/gifs/search?q="+x+"&api_key=DQPQCd0Umf51ny3lA4NnnyquF8J6DrvI&limit=5"
+        $.ajax({url:queryURL, method:"GET"})
+            .done(function(response){
+                for (var i = 0; i < response.data.length; i++) {
+                    var animialDiv = $('<div>')
+                    var p = $('<p>').text("Rating: " + response.data[i].rating)
+                    var animialImage = $('<img>');
+                    animialImage.attr('src', response.data[i].images.fixed_height.url)
+                    animialDiv.append(p)
+                    animialDiv.append(animialImage)
+                    animialDiv.addClass('test')
+                    $("#gifsGoHere").append(animialDiv)
+                }
+            })
+    })
+
+</script>
+</html>
