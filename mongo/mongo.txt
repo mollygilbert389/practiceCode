@@ -1,0 +1,41 @@
+MONGO - non relational database stores data in a flexible way in JSON like documents
+
+MongoDB Notes
+* db - tells you what database you're in
+
+* use 'mynewdb' - creates and moves to a new db
+
+* db.mynewdb.insert({name: ‘Larry’, row:3, os:‘Mac’, hobbies:[‘Coding’, ‘Reading’, ‘Running’] }) - inserts data into db
+returns: WriteResult({ “nInserted” : 1 })
+
+* db.mynewdb.insert({name: ‘Riley’, row:2, os:‘Win’, hobbies:[‘Coding’, ‘Stand Up Comic’, ‘Table Tennis’, ‘knitting’] })
+* db.mynewdb.find({}) - shows everything in db
+* db.mynewdb.find({row:3}) - finds that information in that row
+* db.mynewdb.find({}).pretty() - makes info more readable
+* db.mynewdb.find({name:‘Steve’}) - finds all the people with the "name" = "steve"
+* db.mynewdb.find({os:‘Mac’}) - finds all the people with the "os" = "Mac"
+* db.mynewdb.find({row:3, os:‘Win’})
+* db.mynewdb.find({“hobbies”: {$in: [“Coding”]}})
+
+* db.mynewdb.find({“_id” : ObjectId(“5c6623f26561c5e4f0602286”)})
+
+### Removing, Updating and Dropping
+
+//replacing information im an array
+* db.mynewdb.update({“country”: “Morocco”}, {$set: {“continent”: “Antarctica”}}, {multi: true})
+* db.mynewdb.update({“country”: “Morocco”}, {$set: {“capital”: “Rabat”}})
+* db.mynewdb.update({“country”: “Morocco”}, {$set: {“capital”: “RABAT”}})
+
+//adding more info to an array
+db.mollyNew.update({name: "Molly"}, {$push: {"hobbies": "being sober"}})
+* db.mynewdb.remove({name:"Kate"}) - removes that line from the database
+* db.mollyNew.update({}, {$set: {gavecandy:false}}, {multi:true}) - lets you add a boolean to multiple things in the db
+* db.mollyNew.update({name:"Molly"}, {$set: {gavecandy:true}}) - updates a specific value in the db
+
+
+* db.mynewdb.drop()
+* db.dropDatabase() (edited) 
+
+additional commands (if mongo is still running)
+Kill Mongo
+pkill mongod
