@@ -41,7 +41,6 @@ $(function() {
 
     $(".remove").on("click", function(event) {
       console.log("clicked")
-      event.preventDefault();
       var id = $(this).data("id");
   
       $.ajax("/api/cats" + id, {
