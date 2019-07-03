@@ -43,11 +43,11 @@ $(function() {
       console.log("clicked")
       var id = $(this).data("id");
   
-      $.ajax("/api/cats" + id, {
+      $.ajax("/api/cats/" + id, {
         type: "DELETE",
       }).then(
         function() {
-          console.log("deleted cat");
+          console.log("deleted cat", id);
           location.reload();
         }
       );
