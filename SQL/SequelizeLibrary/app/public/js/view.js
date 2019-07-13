@@ -61,15 +61,16 @@ function renderBooks(data) {
 
     $(".delete").click(function() {
 
-      $.ajax({
-        method: "DELETE",
-        url: "/api/book/" + $(this).attr("data-id")
-      })
-        .then(function() {
-          console.log("Deleted Successfully!");
-        });
+      var info = {
+        id: $(this).attr("data-id")
+      }
 
-      $(this).closest("div").remove();
+      $.post("/api/delete", info)
+      .done(function(deldata){
+        console.log("Deleted!")
+      })
+
+      $(this).closest("div").remove()
 
     });
 
