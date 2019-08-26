@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Materialize Practice</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Dropdown Structure -->
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">one</a></li>
+        <li><a href="#!">two</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">three</a></li>
+    </ul>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo">Materialize Practice</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="badges.html">About</a></li>
+                <li><a href="badges.html">Contact</a></li>
+                <!-- Dropdown Trigger -->
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Dropdown<i
+                            class="material-icons right"></i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col s4">
+                <div class="card">
+                    <div class="card-image">
+                        <img
+                            src="http://thumbor-prod-us-east-1.photo.aws.arc.pub/QnCZP600XcHhZ6wzHN9hc_C18ag=/arc-anglerfish-arc2-prod-bonnier/public/66WHOVXNME37BBS3OJPTAB6REA.jpg">
+                        <span class="card-title">Nature</span>
+                    </div>
+                    <div class="card-content">
+                        <p>I am a very simple card. I am good at containing small bits of information.
+                            I am convenient because I require little markup to use effectively.</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="https://www.arborday.org/trees/treeGuide/">find your tree</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://www.adorama.com/alc/wp-content/uploads/2017/01/mezz_wildflowers-825x465.jpg">
+                        <span class="card-title">Pretty Things</span>
+                    </div>
+                    <div class="card-content">
+                        <p>I am a very simple card. I am good at containing small bits of information.
+                            I am convenient because I require little markup to use effectively.</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="https://www.stylecraze.com/articles/most-beautiful-flowers-in-the-world/#gref">The prettiest flower</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s4">
+                <div class="card">
+                    <div class="card-image">
+                        <img
+                            src="https://sc01.alicdn.com/kf/HTB1hCg6XH5YBuNjSspoq6zeNFXaM/929236664/HTB1hCg6XH5YBuNjSspoq6zeNFXaM.jpg">
+                        <span class="card-title">Fish</span>
+                    </div>
+                    <div class="card-content">
+                        <p>I am a very simple card. I am good at containing small bits of information.
+                            I am convenient because I require little markup to use effectively.</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="https://www.petsmart.com/fish/live-fish/">More Fish</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+
+
+
+<script type="text/javascript">
+
+var dropdowns = document.querySelectorAll('.dropdown-trigger')
+for (var i = 0; i < dropdowns.length; i++){
+    M.Dropdown.init(dropdowns[i]);
+}
+
+
+</script>
+
+</html>

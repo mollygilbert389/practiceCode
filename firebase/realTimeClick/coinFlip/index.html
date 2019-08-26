@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>CoderBay</title>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+  <!-- Bootstrap CDN-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Firebase References -->
+  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <br>
+
+    <!-- Jumbotron Title -->
+    <div class="jumbotron">
+      <h1 class="text-center">Heads or Tails?</h1>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="text-center">
+              <strong>Click the Heads or Tails Images below to play!</strong></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Product -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3 col-sm-offset-2">
+                <img class="img-responsive thumbnail center-block coins" id="heads" src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Washington_Quarter_Silver_1944S_Obverse.png"
+                  alt="Heads!">
+              </div>
+              <div class="col-sm-3 col-sm-offset-2">
+                <img class="img-responsive thumbnail center-block coins" id="tails" src="https://www.nicepng.com/png/full/146-1464848_quarter-tail-png-tails-on-a-coin.png"
+                  alt="Tails!">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-sm-6">
+                        <h3 class="col-sm-2 col-sm-offset-6" id="headsCount">
+                            <strong>Heads Count:</strong>
+                            <span id="highest-bidder"></span>
+                        </h3>
+                        <h3 class="col-sm-2 col-sm-offset-6" id="tailsCount">
+                            <strong>Tails Count:</strong>
+                            <span id="highest-price"></span>
+                        </h3>
+                    </div>
+                    <div class="col-sm-6">
+                        <h3 class="col-sm-2 col-sm-offset-6" id="wins">
+                            <strong>Wins:</strong>
+                            <span id="highest-bidder"></span>
+                        </h3>
+                        <h3 class="col-sm-2 col-sm-offset-6" id="losses">
+                            <strong>Losses:</strong>
+                            <span id="highest-price"></span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript -->
+  <script src="assets/app.js"></script>
+
+</body>
+
+</html>
