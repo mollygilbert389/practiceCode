@@ -1,20 +1,17 @@
-
-
-
 $(document).ready(function () {
 
     //DataBase
     const firebaseConfig = {
-        apiKey: "AIzaSyAVPfjbTzmNomhn-D02xz65Yeu5eu22reE",
-        authDomain: "testing-5c2dc.firebaseapp.com",
-        databaseURL: "https://testing-5c2dc.firebaseio.com",
-        projectId: "testing-5c2dc",
-        storageBucket: "testing-5c2dc.appspot.com",
-        messagingSenderId: "525643938811",
-        appId: "1:525643938811:web:4d352e9b9dcf0975"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+        apiKey: "AIzaSyBk-HzAE2olUa1KlLCywC131FRIqkU9Yjg",
+        authDomain: "wordscramble-f6df6.firebaseapp.com",
+        databaseURL: "https://wordscramble-f6df6.firebaseio.com",
+        projectId: "wordscramble-f6df6",
+        storageBucket: "wordscramble-f6df6.appspot.com",
+        messagingSenderId: "283709291006",
+        appId: "1:283709291006:web:87f55c8d8fb4284d"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
 
     //VARIABLE LIST
 
@@ -29,21 +26,17 @@ $(document).ready(function () {
     let playerBguess = "";
     let playerNum =0;
     const database = firebase.database()
-    // let playerInfo = database.ref("gameInfo")
 
-    // database = firebase.database()
-    // gameData = database
-
-    let players = {
-        name: "",
-        playerAscore: playerAScore,
-        playerBScore: playerBScore,
-        opponent: ""
-    }
+    // let players = {
+    //     name: "",
+    //     playerAscore: playerAScore,
+    //     playerBScore: playerBScore,
+    //     opponent: ""
+    // }
 
 
 
-    //GAME FUNCTION
+    //GAME START
     $("#userNameModal").show();
     $("#userEnter").on("click", function () {
         myDisplayName = $("#userName").val().trim();
@@ -64,13 +57,10 @@ $(document).ready(function () {
     //////////////////////////////////////////////////////////////////////////////////////////////
 
     function createGame() {
-        let playerNum = 1;
         $("#createGame").on("click", function () {
             database.ref().set({
                 players : {
                 name: myDisplayName,
-                playerAScore: 0,
-                playerBScore: 0,
                 opponent: "empty",
                 playerNum: "1"
                 }
@@ -84,16 +74,12 @@ $(document).ready(function () {
             $("#linkdiv").append("<button class='clickyGame' data-name='" + snap.val().players.name + "'" + ">" + snap.val().players.name + "'s Game " + "</button>");
 
             $(".clickyGame").on("click", function () {
-                joinGame();
+                database.ref("/players").child("opponent").set(myDisplayName)
+                database.ref("/players").child("playerNum").set("2")
+                loading()
             });
         });
     };
-
-    function joinGame() {
-        database.ref("/players").child("opponent").set(myDisplayName)
-        database.ref("/players").child("playerNum").set("2")
-        loading()
-    }
 
     function playGame() {
         let gameTime = 60;
@@ -102,6 +88,12 @@ $(document).ready(function () {
         $("#directions").append("GO!");
         chooseWord();
         $("#timer").html("Time Left in the Game: " + gameTime);
+
+        database.ref().child("score").set({
+            playerAscore: 0,
+            playerBscore: 0
+        })
+
         newTimer = setInterval(gameCountdown, 1000);
         function gameCountdown() {
             gameTime--;
@@ -112,24 +104,27 @@ $(document).ready(function () {
             };
         };
 
-        $(".wordGuess").on("click", function () {        
+        $(".wordGuess").on("click", function () {   
             let playerAguess = $("#playerAGuess").val().trim().toLowerCase();
             let playerBguess = $("#playerBGuess").val().trim().toLowerCase();
             let frmA = document.getElementsByName('gameFormA')[0];
             let frmB = document.getElementsByName('gameFormB')[0];
+          
             if (playerAguess === chosenWord) {
-                playerA++;
+                playerAScore++
+                chooseWord()
+                database.ref("/score").child("playerAscore").set(playerAScore)
                 checkScore()
-                chooseWord();
                 frmA.reset();
             } else {
                 frmA.reset();
             };
     
             if (playerBguess === chosenWord) {
-                playerB++;
-                checkScore()
+                playerBScore++
                 chooseWord();
+                database.ref("/score").child("playerBscore").set(playerBScore)
+                checkScore()
                 frmB.reset();
     
             } else {
@@ -141,39 +136,38 @@ $(document).ready(function () {
     };
 
     function checkScore() {
-        console.log(playerA)
-        console.log(playerB)
+        database.ref("score").on("value", function(snap) {
+            let ascore = snap.child("playerAScore").val();
 
-        database.ref("/players").child("playerAScore").set(playerA)
-        database.ref("/players").child("playerBScore").set(playerB)
+            let bscore = snap.child("playerBScore").val()
 
-        database.ref("/players").on("value", function(snap) {
-            let playeraScore = snap.child("playerAScore").val();
-            let playerbScore = snap.child("playerAScore").val()
             $("#playerAscore").empty();
             $("#playerAscore").append("Score: " + playeraScore);
             $("#playerBscore").empty();
             $("#playerBscore").append("Score: " + playerbScore);
         })
+       
     }
 
     function chooseWord() {
-        chosenWord = letterBank[Math.floor(Math.random() * letterBank.length)];
-        $("#displayBox").empty();
+        let chosenWord = letterBank[Math.floor(Math.random() * letterBank.length)];
+        console.log(chosenWord)
         chosenWord = chosenWord.toLowerCase();
         scrambledWord = chosenWord.split("");
-        console.log(scrambledWord);
         scrambledWord = scrambledWord.sort(function () { return 0.5 - Math.random() }).join('');
-        console.log(scrambledWord);
-        $("#displayBox").append(scrambledWord);
+        
+        database.ref().child("chosenWord").set(scrambledWord)
+
+        database.ref("chosenWord").on("value", function(snap) {
+            $("#displayBox").empty();
+            let chosenWord = snap.val()
+            $("#displayBox").append(chosenWord);
+            })
     };
 
     function loading() {
-
         database.ref("/players").on("value", function(snap) {
-
             let playerReady = snap.child("playerNum").val();
-            console.log(playerReady)
             let playerOneName = snap.child("name").val();
             let playerTwoName = snap.child("opponent").val();
         
