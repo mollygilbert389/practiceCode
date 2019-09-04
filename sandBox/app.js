@@ -1,0 +1,229 @@
+
+
+
+$(document).ready(function () {
+
+    //DataBase
+    const firebaseConfig = {
+        apiKey: "AIzaSyAVPfjbTzmNomhn-D02xz65Yeu5eu22reE",
+        authDomain: "testing-5c2dc.firebaseapp.com",
+        databaseURL: "https://testing-5c2dc.firebaseio.com",
+        projectId: "testing-5c2dc",
+        storageBucket: "testing-5c2dc.appspot.com",
+        messagingSenderId: "525643938811",
+        appId: "1:525643938811:web:4d352e9b9dcf0975"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    //VARIABLE LIST
+
+    const letterBank = ["Soup", "Fruit", "Onion", "Fish", "Strawberry", "Grape", "Carrot", "Apple", "Cake", "Steak", "Salad", "Chicken", "Potato", "Mango", "Chips", "Popcorn", "Peanuts", "Watermelon", "Water", "Cookie", "Brownie", "Bagel", "Pizza", "Salsa", "Cheese", "Eggs", "Bacon", "Candy", "Olive", "Cherry", "Tomato", "Bread", "Orange", "Lemon", "Mustard", "Coffee", "Milk", "Butter", "Pepper", "Pasta", "Rice", "Cereal", "Salt", "Honey", "Garlic", "Beans", "Sugar", "Lettuce", "Ham", "Pork", "Crab", "Shrimp", "Turkey", "Mushroom", "Celery", "Lime", "Nuts", "Pumpkin", "Pecans", "Lamb", "Cream", "Flour", "Granola", "Beef", "Jerky", "Seeds", "Spices", "Yogurt", "Berries", "Vegetable", "Peas", "Vinegar", "Ginger", "Chocolate", "Pastry", "Noodles", "Yeast", "Vanilla", "Dough", "Buttermilk", "Batter", "Rasin", "Caramel", "Cornmeal", "Crackers"];
+
+    let chosenWord = "";
+    let playerAScore = 0;
+    let playerBScore = 0;
+    let playerA = "";
+    let playerB = "";
+    let playerAguess = "";
+    let playerBguess = "";
+    let playerNum =0;
+    const database = firebase.database()
+    // let playerInfo = database.ref("gameInfo")
+
+    // database = firebase.database()
+    // gameData = database
+
+    let players = {
+        name: "",
+        playerAscore: playerAScore,
+        playerBScore: playerBScore,
+        opponent: ""
+    }
+
+
+
+    //GAME FUNCTION
+    $("#userNameModal").show();
+    $("#userEnter").on("click", function () {
+        myDisplayName = $("#userName").val().trim();
+        if (myDisplayName != "") {
+            $("#userNameModal").hide();
+            $("#linkdiv").empty();
+            createGame();
+        }
+        else {
+            alert("Please enter a username to play");
+        }
+
+    });
+    $("#playModal").show();
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////FUNCTIONS/////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    function createGame() {
+        let playerNum = 1;
+        $("#createGame").on("click", function () {
+            database.ref().set({
+                players : {
+                name: myDisplayName,
+                playerAScore: 0,
+                playerBScore: 0,
+                opponent: "empty",
+                playerNum: 1
+                }
+            });
+            console.log(players)
+            loading()
+        });
+
+        database.ref().on("value", function (snap) {
+            $("#linkdiv").empty()
+            $("#linkdiv").append("<button class='clickyGame' data-name='" + snap.val().players.name + "'" + ">" + snap.val().players.name + "'s Game " + "</button>");
+
+            $(".clickyGame").on("click", function () {
+                joinGame();
+            });
+        });
+    };
+
+    function joinGame() {
+        database.ref("/players").child("opponent").set(myDisplayName)
+        database.ref("/players").child("playerNum").set(2)
+
+            database.ref("/players").on("value", function(snap) {
+                // let currentPlayers = snap.numChildren();
+                let playerOneExists = snap.child("1").exists();
+                let playerTwoExists = snap.child("2").exists();
+                let playerOneName = snap.child("name").val();
+                let playerTwoName = snap.child("opponent").val();
+            
+                if (playerOneExists) {
+                    $("#playModal").hide();
+                    $("#userGuessBox").hide();
+                    $("#timer").empty()
+                    $("#timer").append("Countdown will appear here. ")
+                    $("#directions").empty()
+                    $("#directions").append("Waiting for another player to join. Hold tight!")
+                    $("#playerANameBox").empty()
+                    $("#playerANameBox").append(playerOneName + "'s Guess Box");
+
+                } 
+                if (playerTwoExists) {
+                    $("#playerBNameBox").empty()
+                    $("#playerBNameBox").append(playerTwoName + "'s Guess Box");
+                    loading()
+                }
+
+    });
+}
+
+    function playGame() {
+        let gameTime = 60;
+        $("#userGuessBox").show();
+        $("#directions").empty();
+        $("#directions").append("GO!");
+        chooseWord();
+        $("#timer").html("Time Left in the Game: " + gameTime);
+        newTimer = setInterval(gameCountdown, 1000);
+        function gameCountdown() {
+            gameTime--;
+            $("#timer").html("Time Left in the Game: " + gameTime);
+            if (gameTime <= 0) {
+                clearInterval(newTimer);
+                showWinner();
+            };
+        };
+
+    };
+
+
+    $(".wordGuess").on("click", function () {
+        let playerAguess = $("#playerAGuess").val().trim().toLowerCase();
+        let playerBguess = $("#playerBGuess").val().trim().toLowerCase();
+        let frmA = document.getElementsByName('gameFormA')[0];
+        let frmB = document.getElementsByName('gameFormB')[0];
+        if (playerAguess === chosenWord) {
+            playerAScore++;
+            $("#playerAscore").empty();
+            $("#playerAscore").append(playerA + "Score: " + playerAScore);
+            chooseWord();
+            frmA.reset();
+        } else {
+            frmA.reset();
+        };
+
+        if (playerBguess === chosenWord) {
+            playerBScore++;
+            $("#playerBscore").empty();
+            $("#playerBscore").append(playerB + "Score: " + playerBScore);
+            chooseWord();
+            frmB.reset();
+        } else {
+            frmB.rest();
+        };
+    });
+
+    function chooseWord() {
+        chosenWord = letterBank[Math.floor(Math.random() * letterBank.length)];
+        $("#displayBox").empty();
+        chosenWord = chosenWord.toLowerCase();
+        scrambledWord = chosenWord.split("");
+        console.log(scrambledWord);
+        scrambledWord = scrambledWord.sort(function () { return 0.5 - Math.random() }).join('');
+        console.log(scrambledWord);
+        $("#displayBox").append(scrambledWord);
+    };
+
+    function loading() {
+        $("#playModal").hide();
+        let counter = 10;
+        $("#userGuessBox").hide();
+        timer = setInterval(countDown, 1000);
+        function countDown() {
+            counter--;
+            $("#timer").html("Time till start: " + counter);
+            if (counter <= 0) {
+                clearInterval(timer);
+                playGame();
+            };
+        };
+
+        // console.log("only 1 player in the game")
+        // $("#playModal").hide();
+        // $("#userGuessBox").hide();
+        // $("#timer").empty()
+        // $("#timer").append("Countdown will appear here. ")
+        // $("#directions").empty()
+        // $("#directions").append("Waiting for another player to join. Hold tight!")
+    };
+
+    function showWinner() {
+        modal = $("#myModal");
+        message = $("#modalWinner");
+        message.empty();
+
+        if (playerAScore > playerBScore) {
+            message.append("We have a winner!" + playerA + " Final Score: " + playerAScore);
+        }
+        if (playerBScore > playerAScore) {
+            message.append("We have a winner!" + playerB + " Final Score: " + playerBScore);
+        }
+        if (playerBScore === playerAScore) {
+            message.append("There was a tie!");
+        }
+        modal.show();
+        $("#playAgain").on("click", function () {
+            modal.hide();
+            location.reload();
+        });
+
+        $("#closeBtn").on("click", function () {
+            modal.hide();
+            location.reload();
+        });
+    };
+
+});
