@@ -72,10 +72,10 @@ $(document).ready(function () {
                 playerAScore: 0,
                 playerBScore: 0,
                 opponent: "empty",
-                playerNum: 1
+                playerNum: "1"
                 }
             });
-            console.log(players)
+
             loading()
         });
 
@@ -91,34 +91,9 @@ $(document).ready(function () {
 
     function joinGame() {
         database.ref("/players").child("opponent").set(myDisplayName)
-        database.ref("/players").child("playerNum").set(2)
-
-            database.ref("/players").on("value", function(snap) {
-                // let currentPlayers = snap.numChildren();
-                let playerOneExists = snap.child("1").exists();
-                let playerTwoExists = snap.child("2").exists();
-                let playerOneName = snap.child("name").val();
-                let playerTwoName = snap.child("opponent").val();
-            
-                if (playerOneExists) {
-                    $("#playModal").hide();
-                    $("#userGuessBox").hide();
-                    $("#timer").empty()
-                    $("#timer").append("Countdown will appear here. ")
-                    $("#directions").empty()
-                    $("#directions").append("Waiting for another player to join. Hold tight!")
-                    $("#playerANameBox").empty()
-                    $("#playerANameBox").append(playerOneName + "'s Guess Box");
-
-                } 
-                if (playerTwoExists) {
-                    $("#playerBNameBox").empty()
-                    $("#playerBNameBox").append(playerTwoName + "'s Guess Box");
-                    loading()
-                }
-
-    });
-}
+        database.ref("/players").child("playerNum").set("2")
+        loading()
+    }
 
     function playGame() {
         let gameTime = 60;
@@ -137,34 +112,50 @@ $(document).ready(function () {
             };
         };
 
+        $(".wordGuess").on("click", function () {        
+            let playerAguess = $("#playerAGuess").val().trim().toLowerCase();
+            let playerBguess = $("#playerBGuess").val().trim().toLowerCase();
+            let frmA = document.getElementsByName('gameFormA')[0];
+            let frmB = document.getElementsByName('gameFormB')[0];
+            if (playerAguess === chosenWord) {
+                playerA++;
+                checkScore()
+                chooseWord();
+                frmA.reset();
+            } else {
+                frmA.reset();
+            };
+    
+            if (playerBguess === chosenWord) {
+                playerB++;
+                checkScore()
+                chooseWord();
+                frmB.reset();
+    
+            } else {
+                frmB.reset();
+            };
+    
+        });
+
     };
 
+    function checkScore() {
+        console.log(playerA)
+        console.log(playerB)
 
-    $(".wordGuess").on("click", function () {
-        let playerAguess = $("#playerAGuess").val().trim().toLowerCase();
-        let playerBguess = $("#playerBGuess").val().trim().toLowerCase();
-        let frmA = document.getElementsByName('gameFormA')[0];
-        let frmB = document.getElementsByName('gameFormB')[0];
-        if (playerAguess === chosenWord) {
-            playerAScore++;
+        database.ref("/players").child("playerAScore").set(playerA)
+        database.ref("/players").child("playerBScore").set(playerB)
+
+        database.ref("/players").on("value", function(snap) {
+            let playeraScore = snap.child("playerAScore").val();
+            let playerbScore = snap.child("playerAScore").val()
             $("#playerAscore").empty();
-            $("#playerAscore").append(playerA + "Score: " + playerAScore);
-            chooseWord();
-            frmA.reset();
-        } else {
-            frmA.reset();
-        };
-
-        if (playerBguess === chosenWord) {
-            playerBScore++;
+            $("#playerAscore").append("Score: " + playeraScore);
             $("#playerBscore").empty();
-            $("#playerBscore").append(playerB + "Score: " + playerBScore);
-            chooseWord();
-            frmB.reset();
-        } else {
-            frmB.rest();
-        };
-    });
+            $("#playerBscore").append("Score: " + playerbScore);
+        })
+    }
 
     function chooseWord() {
         chosenWord = letterBank[Math.floor(Math.random() * letterBank.length)];
@@ -178,26 +169,47 @@ $(document).ready(function () {
     };
 
     function loading() {
-        $("#playModal").hide();
-        let counter = 10;
-        $("#userGuessBox").hide();
-        timer = setInterval(countDown, 1000);
-        function countDown() {
-            counter--;
-            $("#timer").html("Time till start: " + counter);
-            if (counter <= 0) {
-                clearInterval(timer);
-                playGame();
-            };
-        };
 
-        // console.log("only 1 player in the game")
-        // $("#playModal").hide();
-        // $("#userGuessBox").hide();
-        // $("#timer").empty()
-        // $("#timer").append("Countdown will appear here. ")
-        // $("#directions").empty()
-        // $("#directions").append("Waiting for another player to join. Hold tight!")
+        database.ref("/players").on("value", function(snap) {
+
+            let playerReady = snap.child("playerNum").val();
+            console.log(playerReady)
+            let playerOneName = snap.child("name").val();
+            let playerTwoName = snap.child("opponent").val();
+        
+            if (playerReady === "1") {
+                $("#playModal").hide();
+                $("#userGuessBox").hide();
+                $("#timer").empty()
+                $("#timer").append("Countdown will appear here. ")
+                $("#directions").empty()
+                $("#directions").append("Waiting for another player to join. Hold tight!")
+                $("#playerANameBox").empty()
+                $("#playerANameBox").append(playerOneName + "'s Guess Box");
+
+            } else if (playerReady === "2") {
+                $("#directions").empty()
+                $("#playerANameBox").empty()
+                $("#directions").append("You have entered the game! You will now have 10 seconds to prepare. Rules: you will be competing with another play to guess the correct word from the scrambled letters below. Once a player guesses the correct word a new word will appear. Good Luck!")
+                $("#playerANameBox").append(playerOneName + "'s Guess Box");
+                $("#playerBNameBox").empty()
+                $("#playerBNameBox").append(playerTwoName + "'s Guess Box");
+                $("#playModal").hide();
+                let counter = 10;
+                $("#userGuessBox").hide();
+                timer = setInterval(countDown, 1000);
+                    function countDown() {
+                    counter--;
+                    $("#timer").html("Time till start: " + counter);
+                    if (counter <= 0) {
+                        clearInterval(timer);
+                        playGame();
+                        };
+                    };
+            }
+
+        });
+
     };
 
     function showWinner() {
