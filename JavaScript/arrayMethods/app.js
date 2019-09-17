@@ -5,10 +5,10 @@ const items = [
     {name: 'Book', price: 5}, 
     {name: 'Phone', price: 500}, 
     {name: 'Computer', price: 1000}, 
-    {name: 'Keryboard', price: 25}, 
+    {name: 'Keyboard', price: 25}, 
 ]
 
-//retuns items less then or equal to 100
+//returns items less then or equal to 100
 const filteredItems = items.filter((item) => {
     return item.price <= 100
 
@@ -53,14 +53,14 @@ const hasInexpensiveItems = items.some((item)=> {
 
 console.log(hasInexpensiveItems)
 
-//retuns boolean if every item is under 100
+//returns boolean if every item is under 100
 const hasAnyInexpensiveItems = items.every((item)=> {
     return item.price <= 100
 })
 
 console.log(hasAnyInexpensiveItems)
 
-//reduces everthing to one value
+//reduces everything to one value
 const total = items.reduce((currentTotal, item) => {
     return item.price + currentTotal
 }, 0)
